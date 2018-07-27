@@ -1,215 +1,215 @@
-10 REM DEF VARIABLES 
-20 SZ=100:I=-19 
-30 R$=CHR$(13):TA=0 
-40 DIM A$(SZ),AE(SZ) 
-50 DEFFNRN(X)=INT(X*100+.5)/100 
-200 REM MAINROUTINE 
-210 GOSUB6000 
-220 Z$="":GETZ$:IFZ$=""THENGOTO220 
-230 IFZ$=CHR$(133)THENI=I+20:GOSUB1000 
-235 IFZ$=CHR$(134)THENGOSUB3000 
-240 IFZ$=CHR$(135)THENGOSUB5000 
-245 IFZ$=CHR$(136)THENGOSUB7000 
-250 IFZ$=CHR$(137)THENGOSUB2000 
-255 IFZ$=CHR$(138)THENGOSUB4000 
-260 IFZ$=CHR$(139)THENGOSUB6000 
-265 IFZ$=CHR$(140)THENGOSUB8000 
-270 IFZ$=CHR$(17)THENI=I-1:GOSUB1000 
-275 IFZ$=CHR$(145)THENI=I+1:GOSUB1000 
-299 GOTO220 
-300 REM ACCUM TOTALS 
-310 TA=0 
-320 FOR J=1TOMX 
-330 TA=TA+AE(J) 
-340 NEXTJ 
-399 RETURN 
-400 REM LOAD FILES 
-410 INPUT"FILE NAME";F$ 
-420 IFF$="*END"THENGOSUB6000:RETURN
-450 OPEN1,8,2,F$+",SEQ,READ" 
-455 PRINTCHR$(18)CHR$(30)"FOUND"CHR$(146)CHR$(144);F$ 
-460 INPUT#1,MX 
-470 FORJ=1TOMX 
-480 INPUT#1,Y,A$(J),AE(J) 
-490 NEXTJ 
-495 CLOSE1
-499 RETURN 
-500 REM SORT BY NAME 
-505 IFMX=1THENGOTO599 
-510 PRINTCHR$(17)CHR$(17)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-511 PRINTCHR$(18)"SORTING"CHR$(146) 
-520 FORJ=1TOMX-1 
-530 FORK=J+1TOMX 
-540 IFA$(K)>A$(J)THENGOTO590 
-550 SM$=A$(K):SM=AE(K) 
-560 A$(K)=A$(J) :AE(K)=AE(J) 
-570 A$(J)=SM$:AE(J)=SM 
-590 NEXTK 
-595 NEXTJ 
-599 RETURN 
-1000 REM DISPLAY 
-1010 IF(I<1)OR(I>MX)THENI=1 
-1020 PRINTCHR$(147)" #"TAB(5)CHR$(159)"EXPENSES"CHR$(144)TAB(16)CHR$(156)"AMT";
-1021 PRINTCHR$(144)
-1030 FORJ=ITOI+19
-1040 IFJ>MXTHENPRINT" ":GOTO1080
-1050 PR$=STR$(AE(J)+.001):PR$=MID$(PR$,2,(LEN(PR$)-2))
-1060 IFAE(J)=0THENPR$="0.00"
-1065 J$=MID$(STR$(J),2)
-1070 PRINTTAB(3-LEN(J$))J$;TAB(4)A$(J)TAB(21-LEN(PR$))PR$
-1080 NEXTJ
-1090 TA$=STR$(TA+.001)
-1100 TA$=LEFT$(TA$,LEN(TA$)-1)
-1110 IFTA=0THENTA$="0.00"
-1120 PRINTCHR$(159)"TOTAL "CHR$(144)TA$
-1999 RETURN
-2000 REM ADD NEW
-2010 R=MX+1:N$="":E1$=""
-2020 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)"ADD NEW EXPENSES"
-2030 PRINTCHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-2031 PRINTCHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-2032 PRINTCHR$(17)"ITEM #";R;CHR$(17)
-2040 INPUT"ITEM NAME ";N$
-2050 IFN$="*END"THENGOTO2999
-2055 IFLEN(N$)>10THENN$=LEFT$(N$,10)
-2060 A$(R)=N$
-2070 PRINTCHR$(17);
-2071 INPUT"ITEM AMT  ";E1$
-2080 IFE1$="*END"THENGOTO2999
-2085 IFVAL(E1$)=0THENAE(R)=0:GOTO2100
-2090 AE(R)=FNRN(VAL(E1$))
-2095 IFAE(R)>9999.99THENAE(R)=9999.99
-2100 MX=MX+1
-2110 GOTO2010
-2220 MX=MX+1
-2999 GOSUB500:GOSUB300:GOSUB6000:RETURN
-3000 REM UPDATE
-3010 PRINTCHR$(147)CHR$(31)" EXPENSE ";CHR$(18)"UPDATE"CHR$(146)CHR$(144);
-3020 PRINTCHR$(13)
-3021 INPUT"ITEM # ";P1$
-3025 IFP1$="*END"THENGOTO3999
-3026 IF(VAL(P1$)=0)OR(VAL(P1$)<1)THENPRINTCHR$(13)CHR$(13)CHR$(29)CHR$(29);
-3027 IF(VAL(P1$)=0)OR(VAL(P1$)<1)THENPRINTCHR$(29)CHR$(29)CHR$(156)CHR$(18);
-3028 IF(VAL(P1$)=0)OR(VAL(P1$)<1)THENPRINT"INPUT ERROR"CHR$(146)CHR$(144);"
-3029 IF(VAL(P1$)=0)OR(VAL(P1$)<1)THENGOTO3020
-3030 P=INT(VAL(P1$))
-3032 N$="":E1$=""
-3040 IFP>SZTHENPRINT"MAX EXCEEDED":P=SZ:MX=P
-3050 IFP>MXTHENMX=P
-3060 PR$=STR$(AE(P) +.001):PR$=MID$(PR$,2,(LEN(PR$)-2))
-3065 IFAE(P)=0THENPR$="0.00"
-3070 PRINTP;TAB(4)A$(P)TAB(21-LEN(PR$))PR$CHR$(17)
-3080 INPUT"ITEM NAME";N$
-3090 IFN$="*END"THENGOTO3999
-3100 IFN$<>""THENA$(P)=N$
-3105 IFLEN(A$(P))>10THENA$(P)=LEFT$(A$(P),10)
-3110 INPUT"AMT ";E1$
-3120 IFE1$="*END"THENGOTO3999
-3125 IFE1$=""GOTO3010
-3130 IF(VAL(E1$)=0)AND(E1$<>"0")THENPRINTCHR$(13)CHR$(13)CHR$(29)CHR$(29);
-3131 IF(VAL(E1$)=0)AND(E1$<>"0")THENPRINTCHR$(29)CHR$(18)CHR$(156)CHR$(18);
-3133 IF(VAL(E1$)=0)AND(E1$<>"0")THENPRINT"INPUT ERROR"CHR$(146)CHR$(144)
-3134 IF(VAL(E1$)=0)AND(E1$<>"0")THENGOTO3110
-3135 IFVAL(E1$)=0THENAE(P)=0:GOTO3800
-3140 AE(P)=FNRN(VAL(E1$))
-3150 IFAE(P)>9999.99THENAE(P)=9999.99
-3800 GOTO3010
-3999 GOSUB500:GOSUB300:GOSUB6000;RETURN
-4000 REM SAVE FILE
-4010 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)"SAVE EXPENSE LIST"CHR$(13)CHR$(13);
-4020 INPUT"FILE NAME";F$
-4030 IFF$="*END"THENGOSUB6000:RETURN
-4050 OPEN1,8,2,F$+",SEQ,WRITE"
-4060 PRINT#1,MX
-4070 FORJ=1TOMX
-4080 PRINT#1,J;R$;A$(J)R$;AE(J);R$
-4090 NEXTJ
-4100 CLOSE1 :REM 108
-4999 GOSUB6000:RETURN
-5000 REM DELETE
-5005 DT=0:TM=0
-5010 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-5011 PRINTCHR$(29)"DELETE"
-5020 S1$=""
-5021 PRINTCHR$(13)CHR$(13)
-5030 INPUT"START AT";S1$
-5040 IFS1$="*END"THENGOTO5900
-5050 DS=INT(VAL(S1$))
-5060 S1$=""
-5070 IFDS=0THENPRINTCHR$(17)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-5071 IFDS=0THENPRINTCHR$(18)CHR$(156)"INPUT ERROR"CHR$(146);
-5073 IFDS=0THENPRINTCHR$(144):GOTO5020
-5080 S1$=""
-5081 PRINTCHR$(13)CHR$(13);
-5090 INPUT"END AT";S1$
-5100 IFS1$="*END"THENGOTO5900
-5110 IFS1$=""ORS1$="0"THENDE=0:GOTO5200
-5120 DE=INT(VAL(S1$))
-5125 IFDE>MXTHENDE=MX
-5130 IFDE=>DSTHENGOTO5200
-5135 PRINTCHR$(13)CHR$(13)CHR$(29)CHR$(29)CHR$(18)CHR$(156);
-5136 PRINT"0 OR NUMBER GREATER"
-5140 PRINTCHR$(13)CHR$(13)CHR$(29)CHR$(29);
-5141 PRINT"THAN "CHR$(146)CHR$(28);DE;CHR$(18)CHR$(156);
-5142 PRINT"REQUIRED"CHR$(144);
-5150 GOTO5080
-5200 IFDE=0THENDE=DS
-5205 TM=DE-DS+1
-5207 DT=DT+TM
-5210 FORJ=DSTODE
-5220 A$(J)="<9 B>":AE(J)=0 :REM "THIS LINE MIGHT NEED AN EDIT
-5230 NEXTJ
-5240 GOTO5010
-5900 GOSUB500
-5910 MX=MX-DT
-5999 GOSUB300:GOSUB6000:RETURN
-6000 REM OPTIONS MENU
-6009 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-6010 PRINTCHR$(156)"OPTIONS: ",CHR$(144)"
-6020 PRINTCHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(158);
-6021 PRINT"========";CHR$(144)
-6030 PRINTCHR$(17)CHR$(18)CHR$(156);"F1";CHR$(146)CHR$(144);"-DISPLAY EXPENSES"
-6040 PRINTCHR$(17)CHR$(18)CHR$(156);"F2";CHR$(146)CHR$(144);"-ADD NEW EXPENSES"
-6050 PRINTCHR$(17)CHR$(18)CHR$(156);"F3";CHR$(146)CHR$(144);
-6051 PRINT"-UPDATE EXPENSE LIST"
-6060 PRINTCHR$(17)CHR$(18)CHR$(156);"F4";CHR$(146)CHR$(144);"-SAVE EXPENSE LIST"
-6070 PRINTCHR$(17)CHR$(18)CHR$(156);"F5";CHR$(146)CHR$(144);"-DELETE FROM LIST"
-6080 PRINTCHR$(17)CHR$(18)CHR$(156);"F6";CHR$(146)CHR$(144);"-OPTIONS SCREEN"
-6090 PRINTCHR$(17)CHR$(18)CHR$(156);"F7";CHR$(146)CHR$(144);"-LOAD/MERGE FILES"
-6100 PRINTCHR$(17)CHR$(18)CHR$(156);"F8";CHR$(146)CHR$(144);"-END"
-6999 RETURN 
-7000 REM LOAD/MERGE
-7010 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)"LOAD/MERGE"
-7020 PRINTCHR$(17)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)"EXPENSE FILES"
-7030 INPUT"LOAD OR MERGE (L/M)";AN$
-7040 IFAN$="L"THENMX=0:GOSUB400:GOTO7999
-7050 IFAN$="*END"THENGOSUB6000:RETURN
-7060 IFAN$<>"M"GOTO7030
-7070 PRINTCHR$(17)CHR$(29)CHR$(29)CHR$(29)CHR$(29)"MERGE"CHR$(17)
-7080 INPUT"FILE NAME";F$
-7090 IFF$="*END"THENGOSUB6000:RETURN
-7120 OPEN1,8,2,F$+",SEQ,READ"
-7130 INPUT#1,T1
-7140 FORT2=1TOT1
-7150 INPUT#1,Y,T3$,T4
-7160 FORJ=1TOMX
-7170 IFA$(J)=T3$THENAE(J)=INT(((AE(J)+T4)/2)*100)/100:T3$=""
-7180 NEXTJ
-7190 IFT3$<>""THENMX=MX+1:A$(MX)=T3$:AE(MX)=T4
-7200 NEXT
-7210 CLOSE1
-7999 GOSUB500:GOSUB300:GOSUB6000:RETURN
-8000 REM END OF JOB
-8010 PRINTCHR$(147)CHR$(29)CHR$(29)CHR$(29)CHR$(29)"END OF PROGRAM";
-8011 PRINTCHR$(13)CHR$(13)
-8020 PRINT"WOULD YOU LIKE TO SAVE (Y/N)":INPUT AN$
-8030 IFAN$="*END"THENGOSUB6000:RETURN
-8040 IFAN$="N"THENGOTO8060
-8050 GOSUB4000
-8060 PRINTCHR$(147)"THANK YOU"
-8070 PRINTCHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-8071 PRINTCHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29)CHR$(29);
-8072 PRINTCHR$(29)"END"
-8075 PRINT CHR$(154)
-8080 END
+10 rem def variables 
+20 sz=100:i=-19 
+30 r$=chr$(13):ta=0 
+40 dim a$(sz),ae(sz) 
+50 deffnrn(x)=int(x*100+.5)/100 
+200 rem mainroutine 
+210 gosub6000 
+220 z$="":getz$:ifz$=""thengoto220 
+230 ifz$=chr$(133)theni=i+20:gosub1000 
+235 ifz$=chr$(134)thengosub3000 
+240 ifz$=chr$(135)thengosub5000 
+245 ifz$=chr$(136)thengosub7000 
+250 ifz$=chr$(137)thengosub2000 
+255 ifz$=chr$(138)thengosub4000 
+260 ifz$=chr$(139)thengosub6000 
+265 ifz$=chr$(140)thengosub8000 
+270 ifz$=chr$(17)theni=i-1:gosub1000 
+275 ifz$=chr$(145)theni=i+1:gosub1000 
+299 goto220 
+300 rem accum totals 
+310 ta=0 
+320 for j=1tomx 
+330 ta=ta+ae(j) 
+340 nextj 
+399 return 
+400 rem load files 
+410 input"file name";f$ 
+420 iff$="*end"thengosub6000:return
+450 open1,8,2,f$+",seq,read" 
+455 printchr$(18)chr$(30)"found"chr$(146)chr$(144);f$ 
+460 input#1,mx 
+470 forj=1tomx 
+480 input#1,y,a$(j),ae(j) 
+490 nextj 
+495 close1
+499 return 
+500 rem sort by name 
+505 ifmx=1thengoto599 
+510 printchr$(17)chr$(17)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+511 printchr$(18)"sorting"chr$(146) 
+520 forj=1tomx-1 
+530 fork=j+1tomx 
+540 ifa$(k)>a$(j)thengoto590 
+550 sm$=a$(k):sm=ae(k) 
+560 a$(k)=a$(j) :ae(k)=ae(j) 
+570 a$(j)=sm$:ae(j)=sm 
+590 nextk 
+595 nextj 
+599 return 
+1000 rem display 
+1010 if(i<1)or(i>mx)theni=1 
+1020 printchr$(147)" #"tab(5)chr$(159)"expenses"chr$(144)tab(16)chr$(156)"amt";
+1021 printchr$(144)
+1030 forj=itoi+19
+1040 ifj>mxthenprint" ":goto1080
+1050 pr$=str$(ae(j)+.001):pr$=mid$(pr$,2,(len(pr$)-2))
+1060 ifae(j)=0thenpr$="0.00"
+1065 j$=mid$(str$(j),2)
+1070 printtab(3-len(j$))j$;tab(4)a$(j)tab(21-len(pr$))pr$
+1080 nextj
+1090 ta$=str$(ta+.001)
+1100 ta$=left$(ta$,len(ta$)-1)
+1110 ifta=0thenta$="0.00"
+1120 printchr$(159)"total "chr$(144)ta$
+1999 return
+2000 rem add new
+2010 r=mx+1:n$="":e1$=""
+2020 printchr$(147)chr$(29)chr$(29)chr$(29)"add new expenses"
+2030 printchr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+2031 printchr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+2032 printchr$(17)"item #";r;chr$(17)
+2040 input"item name ";n$
+2050 ifn$="*end"thengoto2999
+2055 iflen(n$)>10thenn$=left$(n$,10)
+2060 a$(r)=n$
+2070 printchr$(17);
+2071 input"item amt  ";e1$
+2080 ife1$="*end"thengoto2999
+2085 ifval(e1$)=0thenae(r)=0:goto2100
+2090 ae(r)=fnrn(val(e1$))
+2095 ifae(r)>9999.99thenae(r)=9999.99
+2100 mx=mx+1
+2110 goto2010
+2220 mx=mx+1
+2999 gosub500:gosub300:gosub6000:return
+3000 rem update
+3010 printchr$(147)chr$(31)" expense ";chr$(18)"update"chr$(146)chr$(144);
+3020 printchr$(13)
+3021 input"item # ";p1$
+3025 ifp1$="*end"thengoto3999
+3026 if(val(p1$)=0)or(val(p1$)<1)thenprintchr$(13)chr$(13)chr$(29)chr$(29);
+3027 if(val(p1$)=0)or(val(p1$)<1)thenprintchr$(29)chr$(29)chr$(156)chr$(18);
+3028 if(val(p1$)=0)or(val(p1$)<1)thenprint"input error"chr$(146)chr$(144);"
+3029 if(val(p1$)=0)or(val(p1$)<1)thengoto3020
+3030 p=int(val(p1$))
+3032 n$="":e1$=""
+3040 ifp>szthenprint"max exceeded":p=sz:mx=p
+3050 ifp>mxthenmx=p
+3060 pr$=str$(ae(p) +.001):pr$=mid$(pr$,2,(len(pr$)-2))
+3065 ifae(p)=0thenpr$="0.00"
+3070 printp;tab(4)a$(p)tab(21-len(pr$))pr$chr$(17)
+3080 input"item name";n$
+3090 ifn$="*end"thengoto3999
+3100 ifn$<>""thena$(p)=n$
+3105 iflen(a$(p))>10thena$(p)=left$(a$(p),10)
+3110 input"amt ";e1$
+3120 ife1$="*end"thengoto3999
+3125 ife1$=""goto3010
+3130 if(val(e1$)=0)and(e1$<>"0")thenprintchr$(13)chr$(13)chr$(29)chr$(29);
+3131 if(val(e1$)=0)and(e1$<>"0")thenprintchr$(29)chr$(18)chr$(156)chr$(18);
+3133 if(val(e1$)=0)and(e1$<>"0")thenprint"input error"chr$(146)chr$(144)
+3134 if(val(e1$)=0)and(e1$<>"0")thengoto3110
+3135 ifval(e1$)=0thenae(p)=0:goto3800
+3140 ae(p)=fnrn(val(e1$))
+3150 ifae(p)>9999.99thenae(p)=9999.99
+3800 goto3010
+3999 gosub500:gosub300:gosub6000;return
+4000 rem save file
+4010 printchr$(147)chr$(29)chr$(29)chr$(29)"save expense list"chr$(13)chr$(13);
+4020 input"file name";f$
+4030 iff$="*end"thengosub6000:return
+4050 open1,8,2,f$+",seq,write"
+4060 print#1,mx
+4070 forj=1tomx
+4080 print#1,j;r$;a$(j)r$;ae(j);r$
+4090 nextj
+4100 close1 :rem 108
+4999 gosub6000:return
+5000 rem delete
+5005 dt=0:tm=0
+5010 printchr$(147)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+5011 printchr$(29)"delete"
+5020 s1$=""
+5021 printchr$(13)chr$(13)
+5030 input"start at";s1$
+5040 ifs1$="*end"thengoto5900
+5050 ds=int(val(s1$))
+5060 s1$=""
+5070 ifds=0thenprintchr$(17)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+5071 ifds=0thenprintchr$(18)chr$(156)"input error"chr$(146);
+5073 ifds=0thenprintchr$(144):goto5020
+5080 s1$=""
+5081 printchr$(13)chr$(13);
+5090 input"end at";s1$
+5100 ifs1$="*end"thengoto5900
+5110 ifs1$=""ors1$="0"thende=0:goto5200
+5120 de=int(val(s1$))
+5125 ifde>mxthende=mx
+5130 ifde=>dsthengoto5200
+5135 printchr$(13)chr$(13)chr$(29)chr$(29)chr$(18)chr$(156);
+5136 print"0 or number greater"
+5140 printchr$(13)chr$(13)chr$(29)chr$(29);
+5141 print"than "chr$(146)chr$(28);de;chr$(18)chr$(156);
+5142 print"required"chr$(144);
+5150 goto5080
+5200 ifde=0thende=ds
+5205 tm=de-ds+1
+5207 dt=dt+tm
+5210 forj=dstode
+5220 a$(j)="<9 b>":ae(j)=0 :rem "this line might need an edit
+5230 nextj
+5240 goto5010
+5900 gosub500
+5910 mx=mx-dt
+5999 gosub300:gosub6000:return
+6000 rem options menu
+6009 printchr$(147)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+6010 printchr$(156)"options: ",chr$(144)"
+6020 printchr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(158);
+6021 print"========";chr$(144)
+6030 printchr$(17)chr$(18)chr$(156);"f1";chr$(146)chr$(144);"-display expenses"
+6040 printchr$(17)chr$(18)chr$(156);"f2";chr$(146)chr$(144);"-add new expenses"
+6050 printchr$(17)chr$(18)chr$(156);"f3";chr$(146)chr$(144);
+6051 print"-update expense list"
+6060 printchr$(17)chr$(18)chr$(156);"f4";chr$(146)chr$(144);"-save expense list"
+6070 printchr$(17)chr$(18)chr$(156);"f5";chr$(146)chr$(144);"-delete from list"
+6080 printchr$(17)chr$(18)chr$(156);"f6";chr$(146)chr$(144);"-options screen"
+6090 printchr$(17)chr$(18)chr$(156);"f7";chr$(146)chr$(144);"-load/merge files"
+6100 printchr$(17)chr$(18)chr$(156);"f8";chr$(146)chr$(144);"-end"
+6999 return 
+7000 rem load/merge
+7010 printchr$(147)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)"load/merge"
+7020 printchr$(17)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29)"expense files"
+7030 input"load or merge (l/m)";an$
+7040 ifan$="l"thenmx=0:gosub400:goto7999
+7050 ifan$="*end"thengosub6000:return
+7060 ifan$<>"m"goto7030
+7070 printchr$(17)chr$(29)chr$(29)chr$(29)chr$(29)"merge"chr$(17)
+7080 input"file name";f$
+7090 iff$="*end"thengosub6000:return
+7120 open1,8,2,f$+",seq,read"
+7130 input#1,t1
+7140 fort2=1tot1
+7150 input#1,y,t3$,t4
+7160 forj=1tomx
+7170 ifa$(j)=t3$thenae(j)=int(((ae(j)+t4)/2)*100)/100:t3$=""
+7180 nextj
+7190 ift3$<>""thenmx=mx+1:a$(mx)=t3$:ae(mx)=t4
+7200 next
+7210 close1
+7999 gosub500:gosub300:gosub6000:return
+8000 rem end of job
+8010 printchr$(147)chr$(29)chr$(29)chr$(29)chr$(29)"end of program";
+8011 printchr$(13)chr$(13)
+8020 print"would you like to save (y/n)":input an$
+8030 ifan$="*end"thengosub6000:return
+8040 ifan$="n"thengoto8060
+8050 gosub4000
+8060 printchr$(147)"thank you"
+8070 printchr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+8071 printchr$(29)chr$(29)chr$(29)chr$(29)chr$(29)chr$(29);
+8072 printchr$(29)"end"
+8075 print chr$(154)
+8080 end
 
