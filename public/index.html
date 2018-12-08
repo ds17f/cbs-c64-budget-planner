@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-us">
+    <body>
+        <!-- the canvas *must not* have any border or padding, or mouse coords will be wrong -->
+        <canvas  id="canvas" style="border: 0px none;"></canvas>
+        <script type="text/javascript" >
+
+            function audioDetected() {
+                return (typeof Audio === 'function' && new Audio().mozSetup === 'function') ||
+                    (typeof AudioContext === 'function') ||
+                    (typeof webkitAudioContext === 'function');
+            }
+
+            function loadFiles() {
+                var base64EncodedFile = '...';
+                FS.createDataFile('/', 'cbsBudgetPlanner1983.d64', window.atob(base64EncodedFile), true, true);
+            }
+
+            var viceArguments = ['-autostart', 'disk-image.d64'].concat(
+                audioDetected() ? ['-soundsync', 0, '-soundrate', 22050, '-soundfragsize', 2] : ['-sound']
+            );
+
+            var Module = {
+                preRun: [loadFiles],
+                arguments: viceArguments,
+                canvas: document.getElementById('canvas'),
+            };
+
+        </script>
+        <script type="text/javascript" src="js/x64.js"></script>
+    </body>
+</html>
