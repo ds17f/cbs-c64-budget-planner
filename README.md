@@ -1,4 +1,4 @@
-# cbs-c64-budget-planner-1983
+# CBS C64 Budget Planner
 The December 1983 issue of Compute Gazette contains an article and code listing for a budget planner that my father Charles B. Silbergleith wrote.  In honor of its 35th anniversary and for his as a birthday gift I've restored the old code to working form.  This repository contains a listing of that code as well as a runnable disk image that will work in a modern C64 Emulator.
 
 # Original Magazine
