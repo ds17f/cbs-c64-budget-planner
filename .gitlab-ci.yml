@@ -3,9 +3,10 @@ image: alpine:latest
 pages:
   stage: deploy
   script:
-  - echo 'Nothing to do...'
+  - mkdir public
+  - mv docs/* public
   artifacts:
     paths:
-    - docs
+    - public
   only:
   - master
