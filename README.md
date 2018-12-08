@@ -1,16 +1,32 @@
 # cbs-budget-planner-1983
-A budget planner my father wrote in 1983 and had published in Compute Gazette Issue 6 1983.  You can find it in the archive: 
+The December 1983 issue of Compute Gazette contains an article and code listing for a budget planner that my father Charles B. Silbergleith wrote.  In honor of its 35th anniversary and for his as a birthday gift I've restored the old code to working form.  This repository contains a listing of that code as well as a runnable disk image that will work in a modern C64 Emulator.
 
-https://ia800604.us.archive.org/20/items/1983-12-computegazette/Compute_Gazette_Issue_06_1983_Dec.pdf
+# Original Magazine
+* [Full issue](Compute_Gazette_Issue_06_1983_Dec.pdf)
+* [Relevant Content](Compute_Gazette_Issue_06_1983_Dec_Exceprt.pdf)
 
-The VB file contains a typed out, cleaned up version of the listing in the magazine.  I made it write to floppy instead of tape because the emulator I was using could only read from tape.  I also made the color change back to default c64 light blue on termination.
+# Restore Process
+I found a copy of [the issue of Compute Gazette at Archive.org](https://ia800604.us.archive.org/20/items/1983-12-computegazette/Compute_Gazette_Issue_06_1983_Dec.pdf).  I then keyed the listing into an editor verbatim.  This included a set of special instructions such as `{2 DOWN}` which instruct the user to literally press the down arrow two times.  There were other instructions such as `{CYN}`, again instructing the user to press the corresponding key on the keyboard, in this case to change the color to cyan.  This gave me a generally runnable program but much of the "control" instructions (clear screen, move cursor, change color, etc...) did not function.  
 
-It's important to note that the vb can just be pasted into an emulator (lower case it first) and then you can execute "RUN" and the program will run.  But since this is a direct copy of what was in the magazine you won't get the exact program as my dad wrote it.  You'll find that there are entries like {DOWN} in the listing.  This was an instruction that as you were keying it in you were to press the down arrow.  Similarly there are clear screen commands and color changes that you can do with keys on the keyboard.
+I read a little bit more about these control characters and discovered that C64 Basic actually contains [character codes for these control chars](https://www.c64-wiki.com/wiki/control_character).  I used some fancy regexes and some manual passes to insert the proper characters as required.  This lead to some issues with line length as the C64 limits lines to 80 characters.  I had to break the lines up adding new lines and line numbers and adjusting `goto`s when necessary.
 
-In order to make the listing copy/paste ready, I intend to go back through it and change these entries into the corresponding character codes, for example:
-PRINT CHR$(156)
-will get you the purple that my dad used.  The only issue might be the limits to line length (80 chars).
-(see here for more: https://www.c64-wiki.com/wiki/control_character)
+It was clear, once I was done, why the original instructions of, "Press down arrow 2 times," made sense.  The C64 was significantly limited in terms of code space, so reducing the listing length, and the time to type the listing in, were important factors in designing the code sharing solution.  It was interesting to jump back 35 years and step into the world of open source before there was a name for the concept.  In a way, Compute Gazette was a GitHub like tool for its day.
 
+# Repository Content
+## Runnable Disk Image
+[cbsBudgetPlanner1983.d64](cbsBudgetPlanner1983.d64)
+For ease of use a runnable version has been written to a C64 Disk Image (type `d64`).  That image can be loaded into your emulator of choice and run using the standard: 
+```
+LOAD "*", 8, 1
+RUN
+```
+Some emulators may even do this by default if you drag and drop the disk image onto a running version of the emulator.
 
-The d64 disk image has a full, runnable, correct implementation using the colors and other control characters.  In addition I've added a file SAMPLE.BDG which contains the "typical budget" that my father listed in the original article.
+## Original Listing
+[CharlesBudgetPlanner.vb](CharlesBudgetPlanner.vb)
+For posterity I've included an original exact copy of the original source code as published in the magazine.  This contains the `{2 DOWN}` style instructions as they were listed in the magazine.  
+
+## Character Coded Listing
+[CharlesBudgetPlanner_copypaste.vb](CharlesBudgetPlanner_copypaste.vb)
+For completeness I've included a version of the source code which has had the control characters entered as character codes.  The file has also been lowercased so that it can be pasted directly into a C64 emulator and it should run without issue.
+
