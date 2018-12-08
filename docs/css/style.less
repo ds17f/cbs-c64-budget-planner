@@ -1,0 +1,111 @@
+
+/* c64 color palette from:
+      http://unusedino.de/ec64/technical/misc/vic656x/colors */
+
+@c64_black:       #000000;
+@c64_white:       #FFFFFF;
+@c64_red:         #68372B;
+@c64_cyan:        #70A4B2;
+@c64_purple:      #6F3D86;
+@c64_green:       #588D43;
+@c64_blue:        #352879;
+@c64_yellow:      #B8C76F;
+@c64_orange:      #6F4F25;
+@c64_brown:       #433900;
+@c64_light_red:   #9A6759;
+@c64_dark_grey:   #444444;
+@c64_grey:        #6C6C6C;
+@c64_light_green: #9AD284;
+@c64_light_blue:  #6C5EB5;
+@c64_light_grey:  #959595;
+
+/* Background Colors */
+
+html, body {
+  color: @c64_light_blue;
+  background-color: @c64_light_blue;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  width: 940px;
+  min-height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #352879;
+}
+
+/* Font Styles */
+@font-face {
+	 font-family: "C64 User";
+	 src: url("../fonts/C64_User_v1.0-STYLE.ttf") format("truetype");
+}
+
+@font-face {
+	 font-family: "C64 User Mono";
+	 src: url("../fonts/C64_User_Mono_v1.0-STYLE.ttf") format("truetype");
+}
+
+@font-face {
+	 font-family: "C64 Pro";
+	 src: url("../fonts/C64_Pro_v1.0-STYLE.ttf") format("truetype");
+}
+
+@font-face {
+	 font-family: "C64 Pro Mono";
+	 src: url("../fonts/C64_Pro_Mono_v1.0-STYLE.ttf") format("truetype");
+}
+
+.c64u {
+	font: normal 18pt/24px "C64 User", verdana, helvetica, sans-serif;
+	letter-spacing: 0px;
+	padding: 0;
+	margin: 0;
+}
+.c64um {
+	font: normal 24pt/32px "C64 User Mono", verdana, helvetica, sans-serif;
+	letter-spacing: 0px;
+	padding: 0;
+	margin: 0;
+}
+.c64p {
+	font: normal 18pt/24px "C64 Pro", verdana, helvetica, sans-serif;
+	letter-spacing: 0px;
+	padding: 0;
+	margin: 0;
+}
+.c64pm {
+	font: normal 24pt/32px "C64 Pro Mono", verdana, helvetica, sans-serif;
+	letter-spacing: 0px;
+	padding: 0;
+	margin: 0;
+}
+.px8 {
+	font-size: 6pt;
+	line-height: 8px;
+}
+.px16 {
+	font-size: 12pt;
+	line-height: 16px;
+}
+.px24 {
+	font-size: 18pt;
+	line-height: 24px;
+}
+.px32 {
+	font-size: 24pt;
+	line-height: 32px;
+}
+.px40 {
+	font-size: 30pt;
+	line-height: 40px;
+}
+
