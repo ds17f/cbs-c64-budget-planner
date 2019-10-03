@@ -2,7 +2,7 @@
 The December 1983 issue of Compute Gazette contains an article and code listing for a budget planner that my father Charles B. Silbergleith wrote.  In honor of its 35th anniversary and for his as a birthday gift I've restored the old code to working form.  This repository contains a listing of that code as well as a runnable disk image that will work in a modern C64 Emulator.
 
 # Demo
-You can try out the application by visiting the online demo: https://damiansilbergleithcunniff.github.io/cbs-c64-budget-planner/
+You can try out the application by visiting the online demo: https://ds17f.github.io/cbs-c64-budget-planner/
 
 # Original Magazine
 * [Full issue](Compute_Gazette_Issue_06_1983_Dec.pdf)
